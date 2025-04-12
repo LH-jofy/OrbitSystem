@@ -1,0 +1,94 @@
+[gd_scene load_steps=20 format=3 uid="uid://cllt4ygtl2d26"]
+
+[ext_resource type="Script" path="res://Earth.gd" id="1_0ucik"]
+[ext_resource type="Script" path="res://EarthSystemOrbit.gd" id="1_2m8v7"]
+[ext_resource type="Texture2D" uid="uid://bbkoq0nlgja51" path="res://Assets/8k_earth_daymap.jpg" id="2_ah3yv"]
+[ext_resource type="Script" path="res://Camera3D.gd" id="2_npeaf"]
+[ext_resource type="PackedScene" uid="uid://c14jvdqcsr6ok" path="res://path_3d.tscn" id="3_mojo5"]
+[ext_resource type="Texture2D" uid="uid://ky140utka822" path="res://Assets/8k_stars_milky_way.jpg" id="3_qfr1h"]
+[ext_resource type="Script" path="res://orbit.gd" id="5_hmado"]
+[ext_resource type="PackedScene" uid="uid://dmknqpxsr0oq7" path="res://corpus_16.tscn" id="6_l647q"]
+[ext_resource type="PackedScene" uid="uid://bpljlrmexlwmm" path="res://control.tscn" id="7_hithb"]
+[ext_resource type="Script" path="res://Clouds.gd" id="13_bhi5k"]
+[ext_resource type="Texture2D" uid="uid://h43nu0gnpr3r" path="res://Assets/8k_earth_clouds.jpg" id="14_0yq7y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7akvf"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.74902)
+albedo_texture = ExtResource("14_0yq7y")
+
+[sub_resource type="SphereMesh" id="SphereMesh_2r7ky"]
+material = SubResource("StandardMaterial3D_7akvf")
+radius = 644.178
+height = 1283.71
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5chr7"]
+albedo_texture = ExtResource("2_ah3yv")
+
+[sub_resource type="SphereMesh" id="SphereMesh_h1ji4"]
+material = SubResource("StandardMaterial3D_5chr7")
+radius = 637.8
+height = 1271.0
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bes2v"]
+panorama = ExtResource("3_qfr1h")
+
+[sub_resource type="Sky" id="Sky_kll2l"]
+sky_material = SubResource("PanoramaSkyMaterial_bes2v")
+
+[sub_resource type="Environment" id="Environment_c5kax"]
+background_mode = 2
+sky = SubResource("Sky_kll2l")
+ambient_light_color = Color(0.929715, 0.929715, 0.929715, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_202qf"]
+top_radius = 10.0
+bottom_radius = 10.0
+height = 1500.0
+
+[node name="EarthSystemOrbit" type="Node3D"]
+script = ExtResource("1_2m8v7")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1200, 120, -1200)
+script = ExtResource("2_npeaf")
+target = NodePath("../Earth")
+
+[node name="Clouds" type="Node3D" parent="."]
+script = ExtResource("13_bhi5k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Clouds"]
+mesh = SubResource("SphereMesh_2r7ky")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1858.62, 0, 0.00012207)
+
+[node name="Earth" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00012207, 0, 0.00012207)
+script = ExtResource("1_0ucik")
+
+[node name="Orbit" type="Node3D" parent="Earth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00012207, 0, -0.00012207)
+script = ExtResource("5_hmado")
+
+[node name="corpus_16" parent="Earth/Orbit" instance=ExtResource("6_l647q")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Earth"]
+mesh = SubResource("SphereMesh_h1ji4")
+skeleton = NodePath("../..")
+
+[node name="OrbitsContainer" type="Node3D" parent="Earth"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00012207, 0, -0.00012207)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c5kax")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.91706, -0.398749, 0, 0.398749, 0.91706, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_202qf")
+
+[node name="Path3D" parent="." instance=ExtResource("3_mojo5")]
+visible = false
+
+[node name="Control" parent="." instance=ExtResource("7_hithb")]

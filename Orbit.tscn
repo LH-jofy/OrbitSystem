@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmon8g7rvfxpq"]
+
+[ext_resource type="Script" path="res://orbitScript.gd" id="1_30bn0"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_nh25o"]
+
+[node name="Orbit" type="Node3D"]
+script = ExtResource("1_30bn0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ImmediateMesh_nh25o")

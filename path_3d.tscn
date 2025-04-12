@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c14jvdqcsr6ok"]
+
+[ext_resource type="Script" path="res://path_3d.gd" id="1_ya82s"]
+
+[sub_resource type="Curve3D" id="Curve3D_dauwt"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_0hg8h"]
+radius = 50.0
+height = 100.0
+
+[node name="Path3D" type="Path3D"]
+curve = SubResource("Curve3D_dauwt")
+script = ExtResource("1_ya82s")
+orbiting_object = NodePath("PathFollow3D/MeshInstance3D")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PathFollow3D"]
+mesh = SubResource("SphereMesh_0hg8h")

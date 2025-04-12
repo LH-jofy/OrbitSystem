@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwftiepaxdrk0"]
+
+[ext_resource type="Script" path="res://sateline.gd" id="1_ctekk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dj8t"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_gcnb3"]
+material = SubResource("StandardMaterial3D_7dj8t")
+radius = 50.0
+height = 100.0
+
+[node name="Sateline" type="Node3D"]
+script = ExtResource("1_ctekk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_gcnb3")
